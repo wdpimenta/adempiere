@@ -22,7 +22,7 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for AD_Tree
  *  @author Adempiere (generated) 
- *  @version Release 3.9.1
+ *  @version Release 3.9.2
  */
 public interface I_AD_Tree 
 {
@@ -48,6 +48,21 @@ public interface I_AD_Tree
 	  * Client/Tenant for this installation.
 	  */
 	public int getAD_Client_ID();
+
+    /** Column name AD_ColumnSortOrder_ID */
+    public static final String COLUMNNAME_AD_ColumnSortOrder_ID = "AD_ColumnSortOrder_ID";
+
+	/** Set Order Column.
+	  * Column determining the order
+	  */
+	public void setAD_ColumnSortOrder_ID (int AD_ColumnSortOrder_ID);
+
+	/** Get Order Column.
+	  * Column determining the order
+	  */
+	public int getAD_ColumnSortOrder_ID();
+
+	public org.compiere.model.I_AD_Column getAD_ColumnSortOrder() throws RuntimeException;
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
@@ -171,6 +186,21 @@ public interface I_AD_Tree
 	  */
 	public String getName();
 
+    /** Column name Parent_Column_ID */
+    public static final String COLUMNNAME_Parent_Column_ID = "Parent_Column_ID";
+
+	/** Set Parent Column.
+	  * The link column on the parent tab.
+	  */
+	public void setParent_Column_ID (int Parent_Column_ID);
+
+	/** Get Parent Column.
+	  * The link column on the parent tab.
+	  */
+	public int getParent_Column_ID();
+
+	public org.compiere.model.I_AD_Column getParent_Column() throws RuntimeException;
+
     /** Column name Processing */
     public static final String COLUMNNAME_Processing = "Processing";
 
@@ -193,19 +223,6 @@ public interface I_AD_Tree
 	  */
 	public String getTreeType();
 
-    /** Column name UUID */
-    public static final String COLUMNNAME_UUID = "UUID";
-
-	/** Set Immutable Universally Unique Identifier.
-	  * Immutable Universally Unique Identifier
-	  */
-	public void setUUID (String UUID);
-
-	/** Get Immutable Universally Unique Identifier.
-	  * Immutable Universally Unique Identifier
-	  */
-	public String getUUID();
-
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
@@ -221,4 +238,17 @@ public interface I_AD_Tree
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name UUID */
+    public static final String COLUMNNAME_UUID = "UUID";
+
+	/** Set Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID);
+
+	/** Get Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public String getUUID();
 }

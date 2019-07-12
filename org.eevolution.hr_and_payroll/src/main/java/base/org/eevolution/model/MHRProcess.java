@@ -456,7 +456,7 @@ public class MHRProcess extends X_HR_Process implements DocAction , DocumentReve
 	{
 		Timestamp currentDate = new Timestamp(System.currentTimeMillis());
 		Optional<Timestamp> loginDateOptional = Optional.of(Env.getContextAsDate(getCtx(),"#Date"));
-		Timestamp reversalDate =  isAccrual ? loginDateOptional.orElse(currentDate) : getDateAcct();
+		Timestamp reversalDate =  isAccrual ? loginDateOptional.orElseGet(() -> currentDate) : getDateAcct();
 		MPeriod.testPeriodOpen(getCtx(), reversalDate , getC_DocType_ID(), getAD_Org_ID());
 		MHRProcess reversal = copyFrom (this, getDateAcct(), getC_DocType_ID(), false, get_TrxName() , true);
 		if (reversal == null)
@@ -1062,6 +1062,7 @@ public class MHRProcess extends X_HR_Process implements DocAction , DocumentReve
 		scriptCtx.remove("_HR_Employee_ValidFrom");
 		scriptCtx.remove("_HR_Employee_ValidTo");
 		scriptCtx.remove("_HR_Employee_Payroll_Value");
+		scriptCtx.remove("_HR_Employee_Contract");
 
 		scriptCtx.put("_DateStart", employee.getStartDate());
 		scriptCtx.put("_DateEnd", employee.getEndDate() == null ? dateTo == null ? getDateAcct() : dateTo : employee.getEndDate());
@@ -1074,6 +1075,10 @@ public class MHRProcess extends X_HR_Process implements DocAction , DocumentReve
 		//	Get Employee valid from and to
 		scriptCtx.put("_HR_Employee_ValidFrom", employeeValidFrom);
 		scriptCtx.put("_HR_Employee_ValidTo", employeeValidTo);
+		if(employee.getHR_Payroll_ID() > 0) {
+			MHRContract contract = MHRContract.getById(getCtx(), employee.getHR_Payroll().getHR_Contract_ID(), get_TrxName());
+			scriptCtx.put("_HR_Employee_Contract", contract);
+		}
 		//	
 		if(getHR_Period_ID() > 0) {
 			createCostCollectorMovements(partner.get_ID(), payrollPeriod);
@@ -1286,6 +1291,7 @@ public class MHRProcess extends X_HR_Process implements DocAction , DocumentReve
 		movement.setC_BP_Relation_ID(attribute.getC_BP_Relation_ID());
 		movement.setHR_Concept_ID(concept.getHR_Concept_ID());
 		movement.setHR_Concept_Category_ID(concept.getHR_Concept_Category_ID());
+		movement.setHR_Concept_Type_ID(concept.getHR_Concept_Type_ID());
 		movement.setHR_Process_ID(getHR_Process_ID());
 		movement.setAD_Rule_ID(attribute.getAD_Rule_ID());
 		movement.setValidFrom(dateFrom);
@@ -2411,6 +2417,7 @@ public class MHRProcess extends X_HR_Process implements DocAction , DocumentReve
 			//toMovement
 			toMovement.setIsManual(fromMovement.isManual());
 			toMovement.setHR_Concept_Category_ID(fromMovement.getHR_Concept_Category_ID());
+			toMovement.setHR_Concept_Type_ID(fromMovement.getHR_Concept_Type_ID());
 			toMovement.setHR_Process_ID(getHR_Process_ID());
 			toMovement.setC_BPartner_ID(fromMovement.getC_BPartner_ID());
 			toMovement.setHR_Concept_ID(fromMovement.getHR_Concept_ID());
